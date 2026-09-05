@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class NotificationResultTest {
     @Test
-    @DisplayName("Debe construir un resultado exitoso correctamente")
+    @DisplayName("Should build the object")
     void shouldBuildSuccessResult() {
         NotificationResult result = NotificationResult.success("notif-1", "TWILIO", "msg-123");
         assertTrue(result.success());
@@ -18,7 +18,7 @@ public class NotificationResultTest {
         assertNotNull(result.timestamp());
     }
     @Test
-    @DisplayName("Debe construir un resultado fallido correctamente")
+    @DisplayName("Should not build the object")
     void shouldBuildFailureResult() {
         NotificationResult result = NotificationResult.failure("notif-2", "SENDGRID", "Timeout error");
 
