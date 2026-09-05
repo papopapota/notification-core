@@ -1,0 +1,33 @@
+package com.danielolivares.notifications.domain.model;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class NotificationResultTest {
+    @Test
+    @DisplayName("Debe construir un resultado exitoso correctamente")
+    void shouldBuildSuccessResult() {
+        NotificationResult result = NotificationResult.success("notif-1", "TWILIO", "msg-123");
+        assertTrue(result.success());
+        assertEquals("notif-1", result.notificationId());
+        assertEquals("TWILIO", result.providerName());
+        assertEquals("msg-123", result.providerReferenceId());
+        assertNull(result.errorMessage());
+        assertNotNull(result.timestamp());
+    }
+    @Test
+    @DisplayName("Debe construir un resultado fallido correctamente")
+    void shouldBuildFailureResult() {
+        NotificationResult result = NotificationResult.failure("notif-2", "SENDGRID", "Timeout error");
+
+        assertFalse(result.success());
+        assertEquals("notif-2", result.notificationId());
+        assertEquals("SENDGRID", result.providerName());
+        assertNull(result.providerReferenceId());
+        assertEquals("Timeout error", result.errorMessage());
+        assertNotNull(result.timestamp());
+    }
+}
+
