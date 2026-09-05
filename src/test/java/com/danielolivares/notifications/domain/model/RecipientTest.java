@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RecipientTest {
     @Test
-    @DisplayName("Debe crear un Recipient válido con un valor no vacío")
+    @DisplayName("It should create a valid recipient ")
     void shouldCreateValidRecipient() {
         Recipient recipient = Recipient.of("user@domain.com");
 
@@ -21,7 +21,7 @@ public class RecipientTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "\t", "\n"})
-    @DisplayName("Debe lanzar excepción si el valor es nulo o está en blanco")
+    @DisplayName("It should thrown an excepción if the value is null or blank")
     void shouldThrowExceptionWhenValueIsBlankOrNull(String invalidValue) {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,

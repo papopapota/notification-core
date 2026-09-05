@@ -15,7 +15,7 @@ public class NotificationTest {
     private final Recipient validRecipient = Recipient.of("user@example.com");
 
     @Test
-    @DisplayName("Debe autogenerar un UUID si el id viene nulo")
+    @DisplayName("It should generate an UUID if the id is null")
     void shouldGenerateIdWhenNullOrEmpty() {
         Notification notification = new Notification(
                 null,
@@ -32,7 +32,7 @@ public class NotificationTest {
     }
 
     @Test
-    @DisplayName("Debe lanzar NullPointerException si el recipient es nulo")
+    @DisplayName("It should thrown a NullPointerException if the recipient is null")
     void shouldThrownWhenRecipientIsNull() {
         assertThrows(
                 NullPointerException.class,
@@ -47,7 +47,7 @@ public class NotificationTest {
     }
 
     @Test
-    @DisplayName("Debe lanzar NullPointerException si el canal es nulo")
+    @DisplayName("It should thrown a NullPointerException if the channel is null")
     void shouldThrownChannelIsNull() {
         assertThrows(
                 NullPointerException.class,
@@ -64,7 +64,7 @@ public class NotificationTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "\t"})
-    @DisplayName("Debe lanzar IllegalArgumentException si el contenido está en blanco")
+    @DisplayName("It should thrown an IllegalArgumentException if the content is blank")
     void shouldThrownWhenContentIsBlankOrNull(String invalidContent) {
         assertThrows(
                 IllegalArgumentException.class,
@@ -79,7 +79,7 @@ public class NotificationTest {
     }
 
     @Test
-    @DisplayName("La metadata debe ser inmutable y no modificable externamente")
+    @DisplayName("metada should be immutable and cannot be modified")
     void shouldKeepMetadataImmutable() {
         Map<String, Object> mutableMap = new HashMap<>();
         mutableMap.put("key", "initial");
