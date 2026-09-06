@@ -49,6 +49,7 @@ Ejemplo mínimo de configuración y despacho en código Java puro:
 import com.danielolivares.notifications.config.NotificationClientBuilder;
 import com.danielolivares.notifications.domain.model.*;
 import com.danielolivares.notifications.domain.model.notification.Notification;
+import com.danielolivares.notifications.domain.model.recipient.Recipient;
 import com.danielolivares.notifications.infrastructure.adapter.email.MockSendGridEmailAdapter;
 import com.danielolivares.notifications.port.in.SendNotificationUseCase;
 
@@ -92,9 +93,9 @@ El punto de entrada para ensamblar la librería es `NotificationClientBuilder`. 
 
 ```java
 SendNotificationUseCase client = NotificationClientBuilder.create()
-        .registerProvider(new MockSendGridEmailAdapter())
-        .registerProvider(new MockTwilioSmsAdapter())
-        .registerProvider(new MockSlackWebhookAdapter())
+        .registerProvider(new SendGridEmailAdapter())
+        .registerProvider(new TwilioSmsAdapter())
+        .registerProvider(new SlackWebhookAdapter())
         .build();
 
 ```
