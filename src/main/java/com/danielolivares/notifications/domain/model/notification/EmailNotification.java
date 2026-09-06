@@ -1,14 +1,15 @@
 package com.danielolivares.notifications.domain.model.notification;
 
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
-import com.danielolivares.notifications.domain.model.Recipient;
+import com.danielolivares.notifications.domain.model.recipient.EmailRecipient;
+import com.danielolivares.notifications.domain.model.recipient.Recipient;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public record EmailNotification(
         String id,
-        Recipient recipient,
+        EmailRecipient recipient,
         String subject,
         String content,
         String htmlContent
