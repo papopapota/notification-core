@@ -31,7 +31,17 @@ public class EmailRecipientTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"user-domain.com","user-domain.com","user@domain.12","user@domain.c"})
+    @ValueSource(strings = {
+            "plainaddress",
+            "@missingusername.com",
+            "username@.com",
+            "username@domain",
+            "username@domain.",
+            "username@domain.c",        // TLD menor a 2 caracteres
+            "username@domain.12",       // TLD numérico
+            "user name@domain.com",     // Espacio intermedio
+            "user@domain..com"          // Doble punto consecutivo
+    })
     @DisplayName("It should thrown an error for invalid emails")
     void shouldNotCreateRecipient(String invalidValue) {
         IllegalArgumentException exception = assertThrows(
