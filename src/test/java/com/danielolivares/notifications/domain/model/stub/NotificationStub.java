@@ -1,7 +1,7 @@
 package com.danielolivares.notifications.domain.model.stub;
 
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
-import com.danielolivares.notifications.domain.model.Notification;
+import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.domain.model.Recipient;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.danielolivares.notifications.config;
 
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
-import com.danielolivares.notifications.domain.model.Notification;
+import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.domain.model.NotificationResult;
 import com.danielolivares.notifications.domain.model.Recipient;
 import com.danielolivares.notifications.infrastructure.adapter.email.SendGridEmailAdapter;

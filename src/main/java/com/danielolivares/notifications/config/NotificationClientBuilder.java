@@ -1,7 +1,6 @@
 package com.danielolivares.notifications.config;
 
 import com.danielolivares.notifications.application.service.NotificationDispatcherService;
-import com.danielolivares.notifications.domain.model.Notification;
 import com.danielolivares.notifications.port.in.SendNotificationUseCase;
 import com.danielolivares.notifications.port.out.NotificationSenderPort;
 

@@ -2,7 +2,7 @@ package com.danielolivares.notifications.application.service;
 
 import com.danielolivares.notifications.domain.exception.ProviderNotFoundException;
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
-import com.danielolivares.notifications.domain.model.Notification;
+import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.domain.model.NotificationResult;
 import com.danielolivares.notifications.port.in.SendNotificationUseCase;
 import com.danielolivares.notifications.port.out.NotificationSenderPort;
