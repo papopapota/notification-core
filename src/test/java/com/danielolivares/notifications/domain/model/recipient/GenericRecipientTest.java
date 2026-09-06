@@ -1,4 +1,4 @@
-package com.danielolivares.notifications.domain.model;
+package com.danielolivares.notifications.domain.model.recipient;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,11 +8,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RecipientTest {
+public class GenericRecipientTest {
     @Test
     @DisplayName("It should create a valid recipient ")
     void shouldCreateValidRecipient() {
-        Recipient recipient = Recipient.of("user@domain.com");
+        Recipient recipient = GenericRecipient.of("user@domain.com");
 
         assertNotNull(recipient);
         assertEquals("user@domain.com", recipient.value());
@@ -25,7 +25,7 @@ public class RecipientTest {
     void shouldThrowExceptionWhenValueIsBlankOrNull(String invalidValue) {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> Recipient.of(invalidValue)
+                () -> GenericRecipient.of(invalidValue)
         );
 
         assertTrue(exception.getMessage().contains("cannot be null or empty"));

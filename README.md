@@ -48,8 +48,11 @@ Ejemplo mínimo de configuración y despacho en código Java puro:
 ```java
 import com.danielolivares.notifications.config.NotificationClientBuilder;
 import com.danielolivares.notifications.domain.model.*;
+import com.danielolivares.notifications.domain.model.notification.Notification;
+import com.danielolivares.notifications.domain.model.recipient.Recipient;
 import com.danielolivares.notifications.infrastructure.adapter.email.MockSendGridEmailAdapter;
 import com.danielolivares.notifications.port.in.SendNotificationUseCase;
+
 import java.util.Map;
 
 public class Main {
@@ -72,7 +75,7 @@ public class Main {
         NotificationResult result = notificationService.execute(notification);
 
         if (result.success()) {
-            System.out.println("Notificación enviada por: " + result.providerName() 
+            System.out.println("Notificación enviada por: " + result.providerName()
                     + " [RefId: " + result.providerReferenceId() + "]");
         } else {
             System.err.println("Fallo de entrega: " + result.errorMessage());
@@ -90,9 +93,9 @@ El punto de entrada para ensamblar la librería es `NotificationClientBuilder`. 
 
 ```java
 SendNotificationUseCase client = NotificationClientBuilder.create()
-        .registerProvider(new MockSendGridEmailAdapter())
-        .registerProvider(new MockTwilioSmsAdapter())
-        .registerProvider(new MockSlackWebhookAdapter())
+        .registerProvider(new SendGridEmailAdapter())
+        .registerProvider(new TwilioSmsAdapter())
+        .registerProvider(new SlackWebhookAdapter())
         .build();
 
 ```
@@ -119,6 +122,7 @@ Solo necesitas implementar la interfaz `NotificationSenderPort`:
 package com.miempresa.adaptadores;
 
 import com.danielolivares.notifications.domain.model.*;
+import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.port.out.NotificationSenderPort;
 
 public class MiProveedorCustomAdapter implements NotificationSenderPort {

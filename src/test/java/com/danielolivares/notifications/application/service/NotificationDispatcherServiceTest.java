@@ -2,7 +2,7 @@ package com.danielolivares.notifications.application.service;
 
 import com.danielolivares.notifications.domain.exception.ProviderNotFoundException;
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
-import com.danielolivares.notifications.domain.model.Notification;
+import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.domain.model.NotificationResult;
 import com.danielolivares.notifications.domain.model.stub.NotificationStub;
 import com.danielolivares.notifications.port.out.NotificationSenderPort;
@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
