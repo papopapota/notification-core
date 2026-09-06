@@ -1,9 +1,12 @@
 package com.danielolivares.notifications.config;
 
-import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
+import com.danielolivares.notifications.domain.model.notification.EmailNotification;
 import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.domain.model.NotificationResult;
-import com.danielolivares.notifications.domain.model.Recipient;
+import com.danielolivares.notifications.domain.model.recipient.EmailRecipient;
+import com.danielolivares.notifications.domain.model.recipient.PhoneRecipient;
+import com.danielolivares.notifications.domain.model.recipient.Recipient;
+import com.danielolivares.notifications.domain.model.notification.SmsNotification;
 import com.danielolivares.notifications.infrastructure.adapter.email.SendGridEmailAdapter;
 import com.danielolivares.notifications.infrastructure.adapter.sms.TwilioSmsAdapter;
 import com.danielolivares.notifications.port.in.SendNotificationUseCase;
@@ -11,8 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -47,12 +48,12 @@ public class NotificationClientBuilderTest {
         @Test
         @DisplayName("send correctly email notification")
         void sendEmailNotification() {
-            Notification emailNotification = new Notification(
+            EmailNotification emailNotification = new EmailNotification(
                     "id-1",
-                    Recipient.of("contacto@empresa.com"),
+                    EmailRecipient.of("contacto@empresa.com"),
                     "Bienvenido al sistema",
-                    EnumNotificationChannel.EMAIL,
-                    Map.of("subject", "Bienvenida")
+                    "Bienvenido",
+                    "<p>bienvenido</p>"
             );
             NotificationResult emailResult = this.client.execute(emailNotification);
 
@@ -63,14 +64,12 @@ public class NotificationClientBuilderTest {
         @Test
         @DisplayName("send correctly sms notification")
         void sendSmsNotification() {
-            Notification emailNotification = new Notification(
+            Notification smsNotification = new SmsNotification(
                     "id-2",
-                    Recipient.of("+51999999999"),
-                    "Token OTP 132456",
-                    EnumNotificationChannel.SMS,
-                    null
+                    PhoneRecipient.of("+51999999999"),
+                    "Token OTP 132456"
             );
-            NotificationResult emailResult = this.client.execute(emailNotification);
+            NotificationResult emailResult = this.client.execute(smsNotification);
 
             assertThat(emailResult.success()).isTrue();
             assertThat(emailResult.providerName()).isEqualTo("TWILIO");

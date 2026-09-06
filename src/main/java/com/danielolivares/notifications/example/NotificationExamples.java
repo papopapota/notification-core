@@ -1,11 +1,10 @@
 package com.danielolivares.notifications.example;
 
 import com.danielolivares.notifications.config.NotificationClientBuilder;
-import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
 import com.danielolivares.notifications.domain.model.notification.EmailNotification;
 import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.domain.model.NotificationResult;
-import com.danielolivares.notifications.domain.model.Recipient;
+import com.danielolivares.notifications.domain.model.recipient.*;
 import com.danielolivares.notifications.domain.model.notification.SlackNotification;
 import com.danielolivares.notifications.domain.model.notification.SmsNotification;
 import com.danielolivares.notifications.infrastructure.adapter.email.SendGridEmailAdapter;
@@ -16,7 +15,6 @@ import com.danielolivares.notifications.port.out.NotificationSenderPort;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class NotificationExamples {
     public static void main(String[] args) {
@@ -33,7 +31,7 @@ public class NotificationExamples {
         System.out.println("-> Ejecutando envío de EMAIL...");
         Notification notificationEmail = new EmailNotification(
                 null,
-                Recipient.of("usuario@domain.com"),
+                EmailRecipient.of("usuario@domain.com"),
                 "Welcome to the web",
                 "Welcome to the web your code 123456",
                 "<p>Welcome</p>"
@@ -45,7 +43,7 @@ public class NotificationExamples {
 
         Notification notificationSms = new SmsNotification(
                 null,
-                Recipient.of("+51999999999"),
+                PhoneRecipient.of("+51999999999"),
                 "OTP code 789456"
         );
         NotificationResult resultSms = notificationUseCase.execute(notificationSms);
@@ -55,7 +53,7 @@ public class NotificationExamples {
 
         Notification notificationSlack = new SlackNotification(
                 null,
-                Recipient.of("#alert-deploy"),
+                GenericRecipient.of("#alert-deploy"),
                 "Deployment complete v1.0.0 "
         );
         NotificationResult resultSlack = notificationUseCase.execute(notificationSlack);
