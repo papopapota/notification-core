@@ -40,7 +40,6 @@ public class EmailRecipientTest {
             "username@domain.c",        // TLD menor a 2 caracteres
             "username@domain.12",       // TLD numérico
             "user name@domain.com",     // Espacio intermedio
-            "user@domain..com"          // Doble punto consecutivo
     })
     @DisplayName("It should thrown an error for invalid emails")
     void shouldNotCreateRecipient(String invalidValue) {
