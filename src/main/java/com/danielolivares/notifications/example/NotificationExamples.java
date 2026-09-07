@@ -19,44 +19,45 @@ import java.util.List;
 public class NotificationExamples {
     public static void main(String[] args) {
         System.out.println("-> INICIANDO ENVIOS");
+        /*PROVIDERS*/
         List<NotificationSenderPort> providersList = new ArrayList<>();
-        providersList.add(new SendGridEmailAdapter());
-        providersList.add(new TwilioSmsAdapter());
-        providersList.add(new SlackWeebhookAdapter());
+        providersList.add(new SendGridEmailAdapter("api-key","ejemplo@dominio.com"));
+        providersList.add(new TwilioSmsAdapter("api-key"));
+        providersList.add(new SlackWeebhookAdapter("api-key"));
 
+        /*BUILD*/
         SendNotificationUseCase notificationUseCase = NotificationClientBuilder.create()
                 .registerProviders(providersList)
                 .build();
 
-        System.out.println("-> Ejecutando envío de EMAIL...");
-        Notification notificationEmail = new EmailNotification(
-                null,
-                EmailRecipient.of("usuario@domain.com"),
+        /*NOTIFICATIONS*/
+
+        Notification emailNotification = EmailNotification.of(
+                "usuario@domain.com",
                 "Welcome to the web",
                 "Welcome to the web your code 123456",
                 "<p>Welcome</p>"
         );
-        NotificationResult resultEmail = notificationUseCase.execute(notificationEmail);
+        Notification smsNotification = SmsNotification.of(
+                "+51999999999",
+                "OTP code 789456"
+        );
+        Notification slackNotification = SlackNotification.of(
+                "#alert-deploy",
+                "Deployment complete v1.0.0 "
+        );
+
+        /*SENDING MESSAGES*/
+        System.out.println("-> Ejecutando envío de EMAIL...");
+        NotificationResult resultEmail = notificationUseCase.execute(emailNotification);
         printResult(resultEmail);
 
         System.out.println("-> Ejecutando envío de SMS...");
-
-        Notification notificationSms = new SmsNotification(
-                null,
-                PhoneRecipient.of("+51999999999"),
-                "OTP code 789456"
-        );
-        NotificationResult resultSms = notificationUseCase.execute(notificationSms);
+        NotificationResult resultSms = notificationUseCase.execute(smsNotification);
         printResult(resultSms);
 
         System.out.println("-> Ejecutando envío de SLACK...");
-
-        Notification notificationSlack = new SlackNotification(
-                null,
-                GenericRecipient.of("#alert-deploy"),
-                "Deployment complete v1.0.0 "
-        );
-        NotificationResult resultSlack = notificationUseCase.execute(notificationSlack);
+        NotificationResult resultSlack = notificationUseCase.execute(slackNotification);
         printResult(resultSlack);
     }
 
