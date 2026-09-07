@@ -9,7 +9,13 @@ import com.danielolivares.notifications.port.out.NotificationSenderPort;
 import java.util.UUID;
 
 public class SendGridEmailAdapter implements NotificationSenderPort {
+    private final String apiKey;
+    private final String senderEmail;
 
+    public SendGridEmailAdapter(String apiKey, String senderEmail) {
+        this.apiKey = apiKey;
+        this.senderEmail = senderEmail;
+    }
     /**
      * @param notification
      * @return NotificationResult.success
@@ -30,6 +36,7 @@ public class SendGridEmailAdapter implements NotificationSenderPort {
             }
             EmailNotification emailNotification = (EmailNotification) notification;
             /*
+             *   senderEmail
              * uso de propiedades de emailNotification
              *   emailNotification.channel()
              *   emailNotification.content()

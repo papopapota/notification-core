@@ -10,6 +10,11 @@ import com.danielolivares.notifications.port.out.NotificationSenderPort;
 import java.util.UUID;
 
 public class TwilioSmsAdapter implements NotificationSenderPort {
+    private final String apiKey;
+
+    public TwilioSmsAdapter(String apiKey) {
+        this.apiKey = apiKey;
+    }
     /**
      * @param notification
      * @return
