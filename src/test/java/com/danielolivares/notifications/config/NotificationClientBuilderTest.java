@@ -25,13 +25,15 @@ public class NotificationClientBuilderTest {
     @DisplayName("when building the client with valid providers, then it should")
     class whenValidProvidersAreRegistered {
         private SendNotificationUseCase client;
+        private SendGridEmailAdapter sendGridEmailAdapter = new SendGridEmailAdapter("api-key", "ejemplo@gmail.com");
+        private TwilioSmsAdapter twilioSmsAdapter = new TwilioSmsAdapter("api-key");
 
         @Test
         @DisplayName("Build an operational SendNotificationUseCase")
         void shouldThrownException() {
             SendNotificationUseCase client = NotificationClientBuilder.create()
-                    .registerProvider(new SendGridEmailAdapter())
-                    .registerProvider(new TwilioSmsAdapter())
+                    .registerProvider(sendGridEmailAdapter)
+                    .registerProvider(twilioSmsAdapter)
                     .build();
 
             assertThat(client).isNotNull();
@@ -40,8 +42,8 @@ public class NotificationClientBuilderTest {
         @BeforeEach
         void createClient() {
             this.client = NotificationClientBuilder.create()
-                    .registerProvider(new SendGridEmailAdapter())
-                    .registerProvider(new TwilioSmsAdapter())
+                    .registerProvider(sendGridEmailAdapter)
+                    .registerProvider(twilioSmsAdapter)
                     .build();
         }
 
