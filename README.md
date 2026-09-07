@@ -59,16 +59,15 @@ public class Main {
     public static void main(String[] args) {
         // 1. Ensamblar el cliente con los adaptadores requeridos
         SendNotificationUseCase notificationService = NotificationClientBuilder.create()
-                .registerProvider(new MockSendGridEmailAdapter())
+                .registerProvider(new SendGridEmailAdapter("apikey"))
                 .build();
 
         // 2. Construir la notificación con tipos seguros
-        Notification notification = new Notification(
-                null, // Autogenera UUID
-                Recipient.of("usuario@dominio.com"),
-                "Bienvenido a nuestra plataforma.",
-                NotificationChannel.EMAIL,
-                Map.of("subject", "Bienvenido")
+        Notification emailNotification = EmailNotification.of(
+                "usuario@domain.com",
+                "Welcome to the web",
+                "Welcome to the web your code 123456",
+                "<p>Welcome</p>"
         );
 
         // 3. Ejecutar el caso de uso
@@ -93,9 +92,9 @@ El punto de entrada para ensamblar la librería es `NotificationClientBuilder`. 
 
 ```java
 SendNotificationUseCase client = NotificationClientBuilder.create()
-        .registerProvider(new SendGridEmailAdapter())
-        .registerProvider(new TwilioSmsAdapter())
-        .registerProvider(new SlackWebhookAdapter())
+        .registerProvider(new SendGridEmailAdapter("apikey"))
+        .registerProvider(new TwilioSmsAdapter("apikey"))
+        .registerProvider(new SlackWebhookAdapter("apikey"))
         .build();
 
 ```
@@ -113,6 +112,7 @@ La librería incluye adaptadores desacoplados listos para usarse como mocks o re
 | **Email** | `SendGridEmailAdapter` | Simulación API SendGrid | `SENDGRID` |
 | **SMS** | `TwilioSmsAdapter` | Simulación API Twilio | `TWILIO` |
 | **Slack** | `SlackWebhookAdapter` | Simulación Webhooks Slack | `SLACK_WEBHOOK` |
+| **Push** | `PushAdapter` | Simulación Push | `PUSH` |
 
 ### ¿Cómo crear un nuevo proveedor?
 
@@ -126,7 +126,10 @@ import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.port.out.NotificationSenderPort;
 
 public class MiProveedorCustomAdapter implements NotificationSenderPort {
-
+    private String apiKey;
+    public MiProveedorCustomAdapter(String apiKey){
+        this.apiKey = apiKey;
+    }
     @Override
     public NotificationResult send(Notification notification) {
         // Lógica de despacho o llamada HTTP
@@ -155,13 +158,18 @@ public class MiProveedorCustomAdapter implements NotificationSenderPort {
 * **`Recipient` (Value Object):**
 * Modela al receptor (`value`). Valida de forma defensiva que no sea nulo ni esté vacío.
 
+* **`PhoneRecipient` (Value Object):**
+* modela phone y valida el numero de celular.
+* **`EmailRecipient` (Value Object):**
+* modela email y valida el email.
 
 * **`NotificationChannel` (Enum):**
 * `EMAIL`, `SMS`, `SLACK`, `PUSH`.
 
 
-* **`Notification` (Record):**
-* Contiene los datos indispensables del mensaje: `id`, `recipient`, `content`, `channel` y `metadata`. Si no se provee `id`, genera automáticamente un `UUID`.
+* **`Notification`**
+* EmailNotification, PushNotification, SmsNotification, SlackNotification
+* Contiene los datos indispen]()sables del mensaje: `id`, `recipient`, `content`, `channel` y `metadata`. Si no se provee `id`, genera automáticamente un `UUID`.
 
 
 * **`NotificationResult` (Record):**
