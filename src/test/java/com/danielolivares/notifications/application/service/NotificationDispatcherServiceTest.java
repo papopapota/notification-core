@@ -2,7 +2,7 @@ package com.danielolivares.notifications.application.service;
 
 import com.danielolivares.notifications.domain.exception.ProviderNotFoundException;
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
-import com.danielolivares.notifications.domain.model.Notification;
+import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.domain.model.NotificationResult;
 import com.danielolivares.notifications.domain.model.stub.NotificationStub;
 import com.danielolivares.notifications.port.out.NotificationSenderPort;
@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -36,7 +35,7 @@ public class NotificationDispatcherServiceTest {
         lenient().when(emailProvider.supportsChannel()).thenReturn(EnumNotificationChannel.EMAIL);
         lenient().when(smsProvider.supportsChannel()).thenReturn(EnumNotificationChannel.SMS);
 
-        service = new NotificationDispatcherService(List.of(emailProvider, smsProvider));
+        service = new NotificationDispatcherService(List.of(emailProvider, smsProvider), null);
     }
 
     @Nested
@@ -86,7 +85,7 @@ public class NotificationDispatcherServiceTest {
         @DisplayName("thrown ProviderNorFoundException")
         void shouldThrownException() {
             Notification slackNotification = NotificationStub.newStub(EnumNotificationChannel.SLACK);
-            assertThatThrownBy(()-> service.execute(slackNotification))
+            assertThatThrownBy(() -> service.execute(slackNotification))
                     .isInstanceOf(ProviderNotFoundException.class)
                     .hasMessageContaining("No provider registered for channel: SLACK");
         }

@@ -1,5 +1,6 @@
-package com.danielolivares.notifications.domain.model;
+package com.danielolivares.notifications.domain.model.notification;
 
+import com.danielolivares.notifications.domain.model.NotificationResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

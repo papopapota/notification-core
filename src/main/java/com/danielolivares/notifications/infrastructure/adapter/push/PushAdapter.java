@@ -1,25 +1,54 @@
 package com.danielolivares.notifications.infrastructure.adapter.push;
 
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
-import com.danielolivares.notifications.domain.model.Notification;
+import com.danielolivares.notifications.domain.model.notification.EmailNotification;
+import com.danielolivares.notifications.domain.model.notification.Notification;
 import com.danielolivares.notifications.domain.model.NotificationResult;
+import com.danielolivares.notifications.domain.model.notification.PushNotification;
 import com.danielolivares.notifications.port.out.NotificationSenderPort;
 
 import java.util.UUID;
 
 public class PushAdapter implements NotificationSenderPort {
+    private final String apiKey;
+
+    public PushAdapter(String apiKey) {
+        this.apiKey = apiKey;
+    }
     /**
      * @param notification
      * @return
      */
     @Override
     public NotificationResult send(Notification notification) {
-        String externalMessageId = "pp-" + UUID.randomUUID();
-        return NotificationResult.success(
-                notification.id(),
-                getProviderName(),
-                externalMessageId
-        );
+        try {
+            if (!canHandle(notification)) {
+                throw new IllegalArgumentException(
+                        getProviderName() + " requiere PushNotification pero recibió: " + notification.getClass().getName()
+                );
+            }
+            PushNotification pushNotification = (PushNotification) notification;
+
+            /*
+            * uso de propiedades de PushNotification
+            *   pushNotification.channel()
+            *    pushNotification.content()
+            *    pushNotification.recipient().value()
+            *    pushNotification.id()
+            * */
+            String externalMessageId = "pp-" + UUID.randomUUID();
+            return NotificationResult.success(
+                    pushNotification.id(),
+                    getProviderName(),
+                    externalMessageId
+            );
+        } catch (Exception e) {
+            return NotificationResult.failure(
+                    notification.id(),
+                    getProviderName(),
+                    e.getMessage()
+            );
+        }
     }
 
     /**

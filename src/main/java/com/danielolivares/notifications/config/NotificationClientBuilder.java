@@ -1,16 +1,18 @@
 package com.danielolivares.notifications.config;
 
 import com.danielolivares.notifications.application.service.NotificationDispatcherService;
-import com.danielolivares.notifications.domain.model.Notification;
+import com.danielolivares.notifications.infrastructure.adapter.email.SendGridEmailAdapter;
 import com.danielolivares.notifications.port.in.SendNotificationUseCase;
 import com.danielolivares.notifications.port.out.NotificationSenderPort;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 
 public class NotificationClientBuilder {
     private final List<NotificationSenderPort> providers = new ArrayList<>();
+    private ExecutorService customExecutor;
 
     private NotificationClientBuilder() {
 
@@ -32,11 +34,21 @@ public class NotificationClientBuilder {
         return this;
     }
 
-    public SendNotificationUseCase build(){
-        if (providers.isEmpty()){
+    public NotificationClientBuilder useSendGrid(String apiKey, String senderEmail) {
+        registerProvider(new SendGridEmailAdapter(apiKey, senderEmail));
+        return this;
+    }
+
+    public NotificationClientBuilder withExecutor(ExecutorService executor) {
+        this.customExecutor = executor;
+        return this;
+    }
+
+    public SendNotificationUseCase build() {
+        if (providers.isEmpty()) {
             throw new IllegalStateException("At least one NotificationSenderPort should be registered.");
         }
-        return new NotificationDispatcherService(List.copyOf(this.providers));
+        return new NotificationDispatcherService(List.copyOf(this.providers), this.customExecutor);
     }
 
 }
