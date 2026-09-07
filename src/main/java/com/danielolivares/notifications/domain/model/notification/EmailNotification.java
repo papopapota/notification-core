@@ -13,9 +13,9 @@ public record EmailNotification(
         String subject,
         String content,
         String htmlContent
-        ) implements Notification {
+) implements Notification {
 
-    public EmailNotification{
+    public EmailNotification {
         id = (id == null || id.isBlank()) ? UUID.randomUUID().toString() : id;
         Objects.requireNonNull(recipient, "Recipient cannot be null");
         if (content == null || content.isBlank()) {
@@ -24,6 +24,10 @@ public record EmailNotification(
         if (htmlContent == null || htmlContent.isBlank()) {
             throw new IllegalArgumentException("Content cannot be null or empty");
         }
+    }
+
+    public static EmailNotification of(String email, String subject, String content, String htmlContent) {
+        return new EmailNotification(null, EmailRecipient.of(email), subject, content, htmlContent);
     }
 
     @Override

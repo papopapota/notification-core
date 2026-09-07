@@ -1,6 +1,7 @@
 package com.danielolivares.notifications.domain.model.notification;
 
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
+import com.danielolivares.notifications.domain.model.recipient.GenericRecipient;
 import com.danielolivares.notifications.domain.model.recipient.Recipient;
 
 import java.util.Objects;
@@ -21,6 +22,9 @@ public record SlackNotification(
         if (content == null || content.isBlank()) {
             throw new IllegalArgumentException("Content cannot be null or empty");
         }
+    }
+    public static SlackNotification of(String channelOrWebhook, String content) {
+        return new SlackNotification(null, GenericRecipient.of(channelOrWebhook), content);
     }
     @Override
     public EnumNotificationChannel channel() {

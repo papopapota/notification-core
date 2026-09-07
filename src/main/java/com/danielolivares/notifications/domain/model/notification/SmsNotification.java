@@ -1,7 +1,7 @@
 package com.danielolivares.notifications.domain.model.notification;
 
 import com.danielolivares.notifications.domain.model.EnumNotificationChannel;
-import com.danielolivares.notifications.domain.model.recipient.Recipient;
+import com.danielolivares.notifications.domain.model.recipient.*;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -21,6 +21,10 @@ public record SmsNotification(
         if (content == null || content.isBlank()) {
             throw new IllegalArgumentException("Content cannot be null or empty");
         }
+    }
+
+    public static SmsNotification of(String phone, String content) {
+        return new SmsNotification(null, PhoneRecipient.of(phone), content);
     }
     @Override
     public EnumNotificationChannel channel() {
