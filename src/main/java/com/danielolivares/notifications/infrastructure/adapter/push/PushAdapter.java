@@ -15,6 +15,7 @@ public class PushAdapter implements NotificationSenderPort {
     public PushAdapter(String apiKey) {
         this.apiKey = apiKey;
     }
+
     /**
      * @param notification
      * @return
@@ -22,20 +23,18 @@ public class PushAdapter implements NotificationSenderPort {
     @Override
     public NotificationResult send(Notification notification) {
         try {
-            if (!canHandle(notification)) {
+            if (!(notification instanceof PushNotification pushNotification)) {
                 throw new IllegalArgumentException(
                         getProviderName() + " requiere PushNotification pero recibió: " + notification.getClass().getName()
                 );
             }
-            PushNotification pushNotification = (PushNotification) notification;
-
             /*
-            * uso de propiedades de PushNotification
-            *   pushNotification.channel()
-            *    pushNotification.content()
-            *    pushNotification.recipient().value()
-            *    pushNotification.id()
-            * */
+             * uso de propiedades de PushNotification
+             *   pushNotification.channel()
+             *    pushNotification.content()
+             *    pushNotification.recipient().value()
+             *    pushNotification.id()
+             * */
             String externalMessageId = "pp-" + UUID.randomUUID();
             return NotificationResult.success(
                     pushNotification.id(),

@@ -15,6 +15,7 @@ public class SlackWeebhookAdapter implements NotificationSenderPort {
     public SlackWeebhookAdapter(String apiKey) {
         this.apiKey = apiKey;
     }
+
     /**
      * @param notification
      * @return
@@ -22,12 +23,11 @@ public class SlackWeebhookAdapter implements NotificationSenderPort {
     @Override
     public NotificationResult send(Notification notification) {
         try {
-            if (!canHandle(notification)) {
+            if (!(notification instanceof SlackNotification slackNotification)) {
                 throw new IllegalArgumentException(
                         getProviderName() + " requiere SlackNotification pero recibió: " + notification.getClass().getName()
                 );
             }
-            SlackNotification slackNotification = (SlackNotification) notification;
             /*
             slackNotification.channel()
             slackNotification.content()

@@ -16,25 +16,25 @@ public class SendGridEmailAdapter implements NotificationSenderPort {
         this.apiKey = apiKey;
         this.senderEmail = senderEmail;
     }
+
     /**
      * @param notification
      * @return NotificationResult.success
-     *     String notificationId,
-     *     boolean success,
-     *     String providerName,
-     *     String providerReferenceId,
-     *     Instant timestamp,
-     *     String errorMessage
+     * String notificationId,
+     * boolean success,
+     * String providerName,
+     * String providerReferenceId,
+     * Instant timestamp,
+     * String errorMessage
      */
     @Override
     public NotificationResult send(Notification notification) {
         try {
-            if (!canHandle(notification)){
+            if (!(notification instanceof EmailNotification emailNotification)) {
                 throw new IllegalArgumentException(
                         getProviderName() + " requiere EmailNotification pero recibió: " + notification.getClass().getName()
                 );
             }
-            EmailNotification emailNotification = (EmailNotification) notification;
             /*
              *   senderEmail
              * uso de propiedades de emailNotification
@@ -51,12 +51,12 @@ public class SendGridEmailAdapter implements NotificationSenderPort {
                     getProviderName(),
                     externalMessageId
             );
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return NotificationResult.failure(
                     notification.id(),
                     getProviderName(),
                     ex.getMessage()
-                    );
+            );
         }
     }
 
