@@ -15,6 +15,7 @@ public class TwilioSmsAdapter implements NotificationSenderPort {
     public TwilioSmsAdapter(String apiKey) {
         this.apiKey = apiKey;
     }
+
     /**
      * @param notification
      * @return
@@ -22,12 +23,11 @@ public class TwilioSmsAdapter implements NotificationSenderPort {
     @Override
     public NotificationResult send(Notification notification) {
         try {
-            if (!canHandle(notification)) {
+            if (!(notification instanceof SmsNotification smsNotification)) {
                 throw new IllegalArgumentException(
                         getProviderName() + " requiere SmsNotification pero recibió: " + notification.getClass().getName()
                 );
             }
-            SmsNotification smsNotification = (SmsNotification) notification;
             /*
             *
             smsNotification.channel()
